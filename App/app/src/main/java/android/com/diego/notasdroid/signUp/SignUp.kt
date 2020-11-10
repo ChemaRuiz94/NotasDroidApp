@@ -1,5 +1,6 @@
 package android.com.diego.notasdroid.signUp
 
+import android.com.diego.notasdroid.R
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
