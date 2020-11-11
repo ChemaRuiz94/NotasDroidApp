@@ -9,7 +9,7 @@
 
     <Button
             android:id="@+id/btnSignUp_SignUp"
-            android:enabled="false"
+            android:enabled="true"
             android:layout_width="143dp"
             android:layout_height="57dp"
             android:layout_gravity="start"
