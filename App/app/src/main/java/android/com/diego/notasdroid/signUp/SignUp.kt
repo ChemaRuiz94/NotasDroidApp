@@ -1,9 +1,12 @@
 package android.com.diego.notasdroid.signUp
 
+import android.app.AlertDialog
 import android.com.diego.notasdroid.R
 import android.com.diego.notasdroid.datos.Dato
 import android.com.diego.notasdroid.datos.DatosController
 import android.com.diego.notasdroid.ui.login.LoginFormState
+import android.com.diego.notasdroid.utilidades.FotoUsuario
+import android.com.diego.notasdroid.utilidades.Utilidades
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
@@ -30,8 +33,9 @@ class SignUp : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up)
 
         initUI()
-
+        elegirFoto()
         registrarDatos()
+        getDatosFromBD()
 
     }
 
@@ -40,11 +44,15 @@ class SignUp : AppCompatActivity() {
         DatosController.initRealm(this)
     }
 
+    fun getDatosFromBD() {
+
+        this.datos = DatosController.selectDatos()!!
+        //Toast.makeText(this, datos[0].pwd, Toast.LENGTH_SHORT).show()
+    }
 
     private fun registrarDatos(){
 
-        val button = findViewById<Button>(R.id.btnSignUp_SignUp)
-        button.setOnClickListener {
+        btnSignUp_SignUp.setOnClickListener {
 
             nameRegistro = txtName_SignUp.text.toString()
             emailRegistro = textUser_SignUp.text.toString()
@@ -54,12 +62,21 @@ class SignUp : AppCompatActivity() {
 
             if (comprobarCamposCompletos(emailRegistro, pwdRegistro, nameRegistro)){
 
-                val newDato = Dato(0,emailRegistro, nameRegistro, 0, pwdRegistro, "", "")
+                val pwdEncriptada  = Utilidades.encryptString(pwdRegistro)
+                val newDato = Dato(0,emailRegistro, nameRegistro, 0,pwdEncriptada , "", "")
                 DatosController.insertDato(newDato)
                 Toast.makeText(this, "Correcto", Toast.LENGTH_SHORT).show()
             }
 
         }
+    }
+
+    private fun elegirFoto(){
+
+        imgBtnFotoPerfil_SignUp.setOnClickListener {
+            initDialogFoto()
+        }
+
     }
 
     private fun comprobarCamposCompletos(email : String, pwd : String, name : String): Boolean {
@@ -106,4 +123,25 @@ class SignUp : AppCompatActivity() {
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
     }
+
+    /**
+     * Muestra el diálogo para tomar foto o elegir de la galería
+     */
+    private fun initDialogFoto() {
+        val fotoDialogoItems = arrayOf(
+            "Seleccionar fotografía de galería",
+            "Capturar fotografía desde la cámara"
+        )
+        // Creamos el dialog con su builder
+        AlertDialog.Builder(this)
+            .setTitle("Seleccionar Acción")
+            .setItems(fotoDialogoItems) { dialog, modo ->
+                when (modo) {
+                    0 -> FotoUsuario.elegirFotoGaleria(this)
+                    1 -> FotoUsuario.tomarFotoCamara(applicationContext, this)
+                }
+            }
+            .show()
+    }
+
 }
