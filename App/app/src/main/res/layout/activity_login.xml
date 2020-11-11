@@ -14,10 +14,10 @@
 
     <EditText
             android:id="@+id/textUser_Login"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:autofillHints="@string/prompt_email"
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
@@ -29,11 +29,11 @@
 
     <EditText
             android:id="@+id/textPwd_Login"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="36dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="10dp"
             android:autofillHints="@string/prompt_password"
             android:hint="@string/prompt_password"
             android:imeActionLabel="@string/action_sign_in_short"

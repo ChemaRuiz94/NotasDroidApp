@@ -21,7 +21,7 @@
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/registrationRecycler_Registration"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     tools:layout_editor_absoluteX="222dp"
                     tools:layout_editor_absoluteY="169dp"
                     tools:listitem="@layout/item_list_registration"
