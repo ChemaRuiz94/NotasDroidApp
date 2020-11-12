@@ -15,8 +15,6 @@
 
     <!-- Strings related to signUp -->
     <string name="prompt_name">Name</string>
-    <string name="prompt_cycle">-Educational cycle-</string>
-    <string name="prompt_year">-Year-</string>
     <string name="action_sign_up">Sign up</string>
     <string name="title_activity_navigation">NavigationActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -30,5 +28,14 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+    <string name="prompt_year">-Year-</string>
+    <string name="spinner_firstYear_Registration">FIRST</string>
+    <string name="spinner_secondYear_Registration">SECOND</string>
+
+    <string name="prompt_cycle">-Educational cycle-</string>
+    <string name="spinner_dam_registration">DAM</string>
+    <string name="spinner_daw_registration">DAW</string>
+    <string name="spinner_asir_registration">ASIR</string>
 
 </resources>

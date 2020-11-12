@@ -3,22 +3,30 @@ package android.com.diego.notasdroid.utilidades
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.StrictMode
 import android.provider.MediaStore
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.net.toFile
+import java.io.IOException
 
 object FotoUsuario {
 
     // Constantes
-    private const val GALERIA = 1
-    private const val CAMARA = 2
-    private const val IMAGEN_DIR = "/NotesDroid"
-    private lateinit var IMAGEN_URI: Uri
-    private lateinit var IMAGEN_MEDIA_URI: Uri
-    private val PROPORCION = 600
-    private var IMAGEN_NOMBRE = ""
-    private var IMAGEN_COMPRES = 30
+    const val GALERIA = 1
+    const val CAMARA = 2
+    const val IMAGEN_DIR = "/NotesDroid"
+    lateinit var IMAGEN_URI: Uri
+    lateinit var IMAGEN_MEDIA_URI: Uri
+    val PROPORCION = 100
+    var IMAGEN_NOMBRE = ""
+    var IMAGEN_COMPRES = 30
 
     /**
     * Elige una foto de la galeria
@@ -49,4 +57,6 @@ object FotoUsuario {
         // Esto para alta y baja
         actividad.startActivityForResult(intent, CAMARA)
     }
+
+
 }

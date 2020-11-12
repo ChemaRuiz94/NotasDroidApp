@@ -26,12 +26,6 @@ import javax.crypto.spec.SecretKeySpec
 
 object Utilidades {
 
-    private const val ALGORITMO = "SHA-256"
-    private val CHARSET = Charsets.UTF_8
-    private const val ENCRIPTADO = "AES"
-    private val KEYSTORE_PROVIDER = "AndroidKeyStore"
-    private val KEYSTORE_ALIAS = "alias"
-
     /**
      * Función para opbtener el nombre del fichero
      */
@@ -138,6 +132,13 @@ object Utilidades {
     fun eliminarImagen(imagenUri: Uri) {
         if (imagenUri.toFile().exists())
             imagenUri.toFile().delete()
+    }
+
+    fun obtenerBytes(bitmap: Bitmap, path: String, compresion: Int, context: Context) : ByteArray{
+
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, compresion, bytes)
+        return bytes.toByteArray()
     }
 
     /**
