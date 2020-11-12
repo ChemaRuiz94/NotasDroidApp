@@ -154,91 +154,11 @@ object Utilidades {
         fo.close()
     }
 
-    @SuppressLint("GetInstance")
-    fun encriptarPwd( pwd : String) : String{
-
-        val keygen = KeyGenerator.getInstance(ALGORITMO)
-        keygen.init(256)
-        val key: SecretKey = keygen.generateKey()
-        val cipher = Cipher.getInstance(ENCRIPTADO)
-        cipher.init(Cipher.ENCRYPT_MODE, key)
-        val datesEncrypts = cipher.doFinal(pwd.toByteArray())
-
-        return encodeToString(datesEncrypts, Base64.DEFAULT)
-
-    }
-
-    fun encryptString(toCipherText: String): String {
-
-            val keyStore = KeyStore.getInstance(KEYSTORE_PROVIDER)
-            keyStore.load(null)
-            val publicKey = keyStore.getCertificate(KEYSTORE_ALIAS).publicKey
-
-            val input = Cipher.getInstance(ENCRIPTADO)
-            input.init(Cipher.ENCRYPT_MODE, publicKey)
-
-            val outputStream = ByteArrayOutputStream()
-            val cipherOutputStream = CipherOutputStream(
-                outputStream, input)
-            cipherOutputStream.write(toCipherText.toByteArray(CHARSET))
-            cipherOutputStream.close()
-
-            val vals = outputStream.toByteArray()
-
-            keyStore.load(null)
-
-            return encodeToString(vals, Base64.DEFAULT)
-
-    }
-
-    @SuppressLint("GetInstance")
-    fun desencriptarPwd(dates : String, pwd : String) : String{
-
-        val secretKey : SecretKeySpec  = generateKey(pwd)
-        val cipher = Cipher.getInstance(ENCRIPTADO)
-        cipher.init(Cipher.DECRYPT_MODE, secretKey)
-        val datosDescodificados = Base64.decode(dates, Base64.DEFAULT)
-        val datosDesencriptados = cipher.doFinal(datosDescodificados)
-
-        return datosDesencriptados.toString()
-
-    }
-
-    fun encriptarPwd2(pwd: String) : String{
-
-        val keygen = KeyGenerator.getInstance(ALGORITMO)
-        keygen.init(256)
-        val key: SecretKey = keygen.generateKey()
-        val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
-        cipher.init(Cipher.ENCRYPT_MODE, key)
-        val ciphertext: ByteArray = cipher.doFinal(pwd.toByteArray())
-        //val iv: ByteArray = cipher.iv
-
-        return encodeToString(ciphertext, Base64.DEFAULT)
-
-    }
-
-    fun desencriptarPwd2(pwd: String) : String{
-
-        val keygen = KeyGenerator.getInstance(ALGORITMO)
-        keygen.init(256)
-        val key: SecretKey = keygen.generateKey()
-        val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
-        cipher.init(Cipher.DECRYPT_MODE, key)
-        val ciphertext: ByteArray = cipher.doFinal(pwd.toByteArray())
-        //val iv: ByteArray = cipher.iv
-
-        return encodeToString(ciphertext, Base64.DEFAULT)
-
-    }
-
-    private fun generateKey(pwd : String) : SecretKeySpec{
-
-        val sha  = MessageDigest.getInstance(ALGORITMO)
-        var key = pwd.toByteArray(CHARSET)
-        key = sha.digest(key)
-
-        return SecretKeySpec(key, ENCRIPTADO)
+    fun hashString(input: String): String {
+        return MessageDigest
+                .getInstance("SHA-256")
+                .digest(input.toByteArray())
+                .fold("", { str, it -> str + "%02x".format(it) })
     }
 
 }
