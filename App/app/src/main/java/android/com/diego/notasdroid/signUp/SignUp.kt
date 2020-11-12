@@ -10,7 +10,6 @@ import android.com.diego.notasdroid.utilidades.Utilidades
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
-import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,6 +26,7 @@ class SignUp : AppCompatActivity() {
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
     private var datos = mutableListOf<Dato>()
+   //private lateinit var algoritmo : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +36,7 @@ class SignUp : AppCompatActivity() {
         elegirFoto()
         registrarDatos()
         getDatosFromBD()
+        DatosController.removeAll()
 
     }
 
@@ -47,7 +48,7 @@ class SignUp : AppCompatActivity() {
     fun getDatosFromBD() {
 
         this.datos = DatosController.selectDatos()!!
-        //Toast.makeText(this, datos[0].pwd, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, datos[1].pwd, Toast.LENGTH_SHORT).show()
     }
 
     private fun registrarDatos(){
@@ -59,11 +60,11 @@ class SignUp : AppCompatActivity() {
             pwdRegistro = textPwd_SignUp.text.toString()
             //ciclo = spnCycle_SignUp.selectedItem.toString()
             //curso = spnYear_SignUp.selectedItem.toString()
+            val pwdEncriptada = Utilidades.hashString(pwdRegistro)
 
             if (comprobarCamposCompletos(emailRegistro, pwdRegistro, nameRegistro)){
 
-                val pwdEncriptada  = Utilidades.encryptString(pwdRegistro)
-                val newDato = Dato(0,emailRegistro, nameRegistro, 0,pwdEncriptada , "", "")
+                val newDato = Dato(1,emailRegistro, nameRegistro, 0,pwdEncriptada , "", "")
                 DatosController.insertDato(newDato)
                 Toast.makeText(this, "Correcto", Toast.LENGTH_SHORT).show()
             }
