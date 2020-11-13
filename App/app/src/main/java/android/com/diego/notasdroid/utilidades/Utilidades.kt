@@ -1,15 +1,16 @@
 package android.com.diego.notasdroid.utilidades
 
-import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Base64
 import android.util.Base64.encodeToString
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toFile
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -161,5 +162,4 @@ object Utilidades {
                 .digest(input.toByteArray())
                 .fold("", { str, it -> str + "%02x".format(it) })
     }
-
 }
