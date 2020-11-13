@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.com.diego.notasdroid.R
 import android.com.diego.notasdroid.datos.Dato
 import android.com.diego.notasdroid.datos.DatosController
-import android.com.diego.notasdroid.ui.login.LoginActivity
+import android.com.diego.notasdroid.login.LoginActivity
 import android.com.diego.notasdroid.utilidades.FotoUsuario
 import android.com.diego.notasdroid.utilidades.Utilidades
 import android.content.Intent

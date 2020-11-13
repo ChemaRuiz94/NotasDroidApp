@@ -29,6 +29,15 @@ object DatosController {
         )
     }
 
+    fun selectDatoByEmail(email : String) : Dato? {
+
+        return Realm.getDefaultInstance().copyFromRealm(
+            Realm.getDefaultInstance().where<Dato>().equalTo("email", email).findFirst()
+        )
+
+    }
+
+
     fun insertDato(dato: Dato){
         Realm.getDefaultInstance().executeTransaction{
             it.copyToRealm(dato)
