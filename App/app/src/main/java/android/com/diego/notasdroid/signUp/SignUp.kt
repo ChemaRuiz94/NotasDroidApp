@@ -2,19 +2,17 @@ package android.com.diego.notasdroid.signUp
 
 import android.app.AlertDialog
 import android.com.diego.notasdroid.R
-import android.com.diego.notasdroid.datos.Dato
-import android.com.diego.notasdroid.datos.DatosController
+import android.com.diego.notasdroid.datos.User
+import android.com.diego.notasdroid.datos.UsersController
 import android.com.diego.notasdroid.login.LoginActivity
 import android.com.diego.notasdroid.utilidades.FotoUsuario
 import android.com.diego.notasdroid.utilidades.Utilidades
 import android.content.Intent
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Base64
 import android.util.Log
 import android.util.Patterns
 import android.widget.ArrayAdapter
@@ -32,7 +30,7 @@ class SignUp : AppCompatActivity() {
     private lateinit var pwdRegistro : String
     private lateinit var ciclo : String
     private lateinit var curso : String
-    private var datos = mutableListOf<Dato>()
+    private var datos = mutableListOf<User>()
     // Constantes
     private val GALERIA = 1
     private val CAMARA = 2
@@ -51,7 +49,7 @@ class SignUp : AppCompatActivity() {
 
     private fun initUI(){
 
-        DatosController.initRealm(this)
+        UsersController.initRealm(this)
 
         initSpinnerCurso()
 
@@ -63,14 +61,14 @@ class SignUp : AppCompatActivity() {
 
     fun getDatosFromBD() {
 
-        this.datos = DatosController.selectDatos()!!
+        this.datos = UsersController.selectDatos()!!
         //Toast.makeText(this, datos[1].pwd, Toast.LENGTH_SHORT).show()
 
     }
 
     private fun initID() : Long {
 
-        this.datos = DatosController.selectDatos()!!
+        this.datos = UsersController.selectDatos()!!
         var id : Long = 0
 
         if (datos.lastIndex != -1){
@@ -99,7 +97,7 @@ class SignUp : AppCompatActivity() {
             if (comprobarCamposCompletos(emailRegistro, pwdRegistro, nameRegistro)){
 
                 val id = initID()
-                val newDato = Dato(
+                val newDato = User(
                     id,
                     emailRegistro,
                     nameRegistro,
@@ -108,7 +106,7 @@ class SignUp : AppCompatActivity() {
                     ciclo,
                     curso
                 )
-                DatosController.insertDato(newDato)
+                UsersController.insertDato(newDato)
                 initLogin()
             }
 
