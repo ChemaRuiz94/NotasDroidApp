@@ -59,4 +59,10 @@ object UsersController {
             it.deleteAll()
         }
     }
+
+    fun closeRealm(){
+
+        Realm.getDefaultInstance().close()
+
+    }
 }

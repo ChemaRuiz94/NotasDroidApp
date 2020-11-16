@@ -1,28 +1,20 @@
 package android.com.diego.notasdroid.utilidades
 
-import android.app.Activity
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Base64.encodeToString
-import androidx.core.content.ContextCompat.startActivity
+import android.util.Base64.*
 import androidx.core.net.toFile
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.security.KeyStore
 import java.security.MessageDigest
 import java.util.*
-import javax.crypto.Cipher
-import javax.crypto.CipherOutputStream
-import javax.crypto.KeyGenerator
-import javax.crypto.SecretKey
-import javax.crypto.spec.SecretKeySpec
 
 
 object Utilidades {
@@ -161,5 +153,30 @@ object Utilidades {
                 .getInstance("SHA-256")
                 .digest(input.toByteArray())
                 .fold("", { str, it -> str + "%02x".format(it) })
+    }
+
+    /**
+     * Convierte una cadena Base64 a Bitmap
+     *
+     * @param b64String cadena Base 64
+     * @return Bitmap
+     */
+    fun base64ToBitmap(b64String: String): Bitmap? {
+        val imageAsBytes: ByteArray = decode(b64String.toByteArray(),DEFAULT)
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.size)
+    }
+
+    /**
+     * Convierte un Bitmap a una cadena Base64
+     *
+     * @param bitmap Bitmap
+     * @return Cadena Base74
+     */
+    fun bitmapToBase64(bitmap: Bitmap): String? {
+        // Comrimimos al 60 % la imagen
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, stream)
+        val byteArray = stream.toByteArray()
+        return encodeToString(byteArray, DEFAULT)
     }
 }
