@@ -2,7 +2,9 @@ package android.com.diego.notasdroid.signUp
 
 import android.app.AlertDialog
 import android.com.diego.notasdroid.R
+import android.com.diego.notasdroid.datos.SQLiteControlador
 import android.com.diego.notasdroid.datos.User
+import android.com.diego.notasdroid.datos.UserSQLite
 import android.com.diego.notasdroid.datos.UsersController
 import android.com.diego.notasdroid.login.LoginActivity
 import android.com.diego.notasdroid.utilidades.FotoUsuario
@@ -12,6 +14,7 @@ import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
@@ -19,17 +22,20 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.io.IOException
 
 
 class SignUp : AppCompatActivity() {
 
-    private lateinit var nameRegistro : String
-    private lateinit var emailRegistro : String
-    private lateinit var pwdRegistro : String
-    private lateinit var ciclo : String
-    private lateinit var curso : String
+    private var nameSave = ""
+    private var emailSave = ""
+    private var pwdSave = ""
+    private var cicloSave : Spinner? = null
+    private var cursoSave : Spinner? = null
+    private var imagenSave : Bitmap? = null
     private var datos = mutableListOf<User>()
     // Constantes
     private val GALERIA = 1
@@ -40,8 +46,6 @@ class SignUp : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up)
 
         initUI()
-        elegirFoto()
-        registrarDatos()
         //getDatosFromBD()
         //DatosController.removeAll()
 
@@ -49,36 +53,28 @@ class SignUp : AppCompatActivity() {
 
     private fun initUI(){
 
-        UsersController.initRealm(this)
+        //UsersController.initRealm(this)
 
         initSpinnerCurso()
 
         initSpinnerCiclo()
 
-        //imgBtnFotoPerfil_SignUp.setBackgroundResource(R.drawable.ic_userdefault)
+        elegirFoto()
+
+        registrarDatos()
+
+        initSaveDatos()
 
     }
 
-    fun getDatosFromBD() {
+    private fun initSaveDatos(){
 
-        this.datos = UsersController.selectDatos()!!
-        //Toast.makeText(this, datos[1].pwd, Toast.LENGTH_SHORT).show()
-
-    }
-
-    private fun initID() : Long {
-
-        this.datos = UsersController.selectDatos()!!
-        var id : Long = 0
-
-        if (datos.lastIndex != -1){
-
-            val ultimo = datos.lastIndex
-            id = if (datos[ultimo].id > (-1).toLong()) { datos[ultimo].id + 1 }
-            else{ 0 }
-        }
-
-        return id
+        this.nameSave = txtName_SignUp.text.toString()
+        this.emailSave = textUser_SignUp.text.toString()
+        this.pwdSave = textPwd_SignUp.text.toString()
+        this.imagenSave = imgUserPhoto_SignUp.drawable.toBitmap()
+        this.cicloSave = spnCycle_SignUp
+        this.cursoSave = spnYear_SignUp
 
     }
 
@@ -86,27 +82,29 @@ class SignUp : AppCompatActivity() {
 
         btnSignUp_SignUp.setOnClickListener {
 
-            nameRegistro = txtName_SignUp.text.toString()
-            emailRegistro = textUser_SignUp.text.toString()
-            pwdRegistro = textPwd_SignUp.text.toString()
-            ciclo = spnCycle_SignUp.selectedItem.toString()
-            curso = spnYear_SignUp.selectedItem.toString()
+            val nameRegistro = txtName_SignUp.text.toString()
+            val emailRegistro = textUser_SignUp.text.toString()
+            val pwdRegistro = textPwd_SignUp.text.toString()
+            val ciclo = spnCycle_SignUp.selectedItemPosition
+            val curso = spnYear_SignUp.selectedItemPosition
+            val imagen = Utilidades.bitmapToBase64(imgUserPhoto_SignUp.drawable.toBitmap())!!
 
             val pwdEncriptada = Utilidades.hashString(pwdRegistro)
 
             if (comprobarCamposCompletos(emailRegistro, pwdRegistro, nameRegistro)){
 
-                val id = initID()
-                val newDato = User(
-                    id,
+                /*val newDato = User(
                     emailRegistro,
                     nameRegistro,
-                    imgUserPhoto_SignUp.toString(),
+                    imagen,
                     pwdEncriptada,
                     ciclo,
                     curso
                 )
-                UsersController.insertDato(newDato)
+                UsersController.insertDato(newDato)*/
+
+                val newUser = UserSQLite(emailRegistro, nameRegistro, imagen, pwdEncriptada, ciclo, curso)
+                SQLiteControlador.insertUsuario(newUser, this)
                 initLogin()
             }
 
@@ -270,7 +268,6 @@ class SignUp : AppCompatActivity() {
                     // La adaptamos al imageview y la mostramos
                     val viewWidthToBitmapWidthRatio = imgUserPhoto_SignUp.width.toDouble() / foto.width.toDouble()
                     imgUserPhoto_SignUp.layoutParams.height = ((foto.height * viewWidthToBitmapWidthRatio).toInt())
-                    foto
                     imgUserPhoto_SignUp.setImageBitmap(foto)
                     // Vamos a compiar nuestra imagen en nuestro directorio
                     Utilidades.copiarImagen(
@@ -287,11 +284,6 @@ class SignUp : AppCompatActivity() {
             Log.d("FOTO", "Entramos en Camara")
             // Cogemos la imagen, pero podemos coger la imagen o su modo en baja calidad (thumbnail)
             try {
-                // Esta línea para baja calidad
-                //thumbnail = (Bitmap) data.getExtras().get("data");
-                // Esto para alta
-                //val source: ImageDecoder.Source = ImageDecoder.createSource(contentResolver, IMAGEN_URI)
-                //val foto: Bitmap = ImageDecoder.decodeBitmap(source)
 
                 val foto: Bitmap
 
@@ -302,23 +294,10 @@ class SignUp : AppCompatActivity() {
                     foto = ImageDecoder.decodeBitmap(source)
                 }
 
-                // Vamos a probar a comprimir
-                //FotoUsuario.IMAGEN_COMPRES = mainSeekCompresion.progress * 10
-                //Utilidades.comprimirImagen(FotoUsuario.IMAGEN_URI.toFile(), foto, FotoUsuario.IMAGEN_COMPRES)
-
-                // Si estamos en módo publico la añadimos en la biblioteca
-                /*if (PUBLICO) {
-                    // Por su queemos guardar el URI con la que se almacena en la Mediastore
-                    FotoUsuario.IMAGEN_MEDIA_URI = Utilidades.añadirImagenGaleria(
-                        FotoUsuario.IMAGEN_URI,
-                        FotoUsuario.IMAGEN_NOMBRE, applicationContext)!!
-                }*/
-
                 // La adaptamos al imageview y la mostramos
                 val viewWidthToBitmapWidthRatio = imgUserPhoto_SignUp.width.toDouble() / foto.width.toDouble()
                 imgUserPhoto_SignUp.layoutParams.height = ((foto.height * viewWidthToBitmapWidthRatio).toInt())
                 imgUserPhoto_SignUp.setImageBitmap(foto)
-                //mainTvPath.text = FotoUsuario.IMAGEN_URI.toString()
 
                 Toast.makeText(this, "¡Foto Salvada!", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
@@ -328,5 +307,36 @@ class SignUp : AppCompatActivity() {
         }
     }
 
+    // Para salvar el estado por ejemplo es usando un Bundle en el ciclo de vida
+    override fun onSaveInstanceState(outState: Bundle) {
+        // Salvamos en un bundle estas variables o estados de la interfaz
+        outState.run {
+            // Actualizamos los datos o los recogemos de la interfaz
+            putString("EMAIL", emailSave)
+            putString("NOMBRE", nameSave)
+            putString("IMAGEN", imagenSave?.let { Utilidades.bitmapToBase64(it) })
+            cicloSave?.selectedItemPosition?.let { putInt("CICLO", it) }
+            cursoSave?.selectedItemPosition?.let { putInt("CURSO", it) }
+            putString("PWD", pwdSave)
+        }
+        // Siempre se llama a la superclase para salvar las cosas
+        super.onSaveInstanceState(outState)
+    }
+
+    // Para recuperar el estado al volver al un estado de ciclo de vida de la Interfaz
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        // Recuperamos en un bundle estas variables o estados de la interfaz
+        super.onRestoreInstanceState(savedInstanceState)
+        // Recuperamos del Bundle
+        savedInstanceState.run {
+            emailSave = getString("EMAIL").toString()
+            nameSave = getString("NOMBRE").toString()
+            imagenSave = Utilidades.base64ToBitmap(getString("IMAGEN").toString())
+            cicloSave?.setSelection(getInt("CICLO"))
+            cursoSave?.setSelection(getInt("CURSO"))
+            pwdSave = getString("PWD").toString()
+
+        }
+    }
 
 }
