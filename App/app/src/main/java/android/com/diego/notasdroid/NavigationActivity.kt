@@ -1,7 +1,11 @@
 package android.com.diego.notasdroid
 
+import android.com.diego.notasdroid.datos.SQLiteControlador
+import android.com.diego.notasdroid.utilidades.Utilidades
 import android.os.Bundle
 import android.view.Menu
+import android.widget.ImageView
+import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -31,6 +35,21 @@ class NavigationActivity : AppCompatActivity() {
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
+
+        //Creamos un nuevo nav Header y buscamos sus elementos por el ID
+        val navHeader = navView.getHeaderView(0)
+        val imgUser = navHeader.findViewById<ImageView>(R.id.imgUserPhoto_slideshow)
+        val nameUser = navHeader.findViewById<TextView>(R.id.textNameUser_slideshow)
+        val emailUser = navHeader.findViewById<TextView>(R.id.textEmailUser_slideshow)
+
+        //Buscamos al usuario y asignamos sus datos a los elementos del nav header
+        val email = intent.getStringExtra("EMAIL")
+        val user = SQLiteControlador.selectUsuario(email, this)!!
+        imgUser.setImageBitmap(Utilidades.base64ToBitmap(user.img))
+        nameUser.text = user.name
+        emailUser.text = user.email
+
+
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.

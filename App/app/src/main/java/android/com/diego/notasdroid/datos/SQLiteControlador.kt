@@ -1,7 +1,6 @@
 package android.com.diego.notasdroid.datos
 
 import android.annotation.SuppressLint
-import android.com.diego.notasdroid.PruebaSQLite
 import android.content.ContentValues
 import android.content.Context
 import android.database.SQLException

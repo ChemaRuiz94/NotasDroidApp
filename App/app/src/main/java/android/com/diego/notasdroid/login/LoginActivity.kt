@@ -63,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
                 if (comprobarLogin(email, pwd)){
 
                     Log.d("Datos", "Login con exito" )
-                    initMain()
+                    initMain(email)
 
                 }else{ showLoginFailed()
 
@@ -78,18 +78,13 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun initMain(){
+    private fun initMain(email: String){
 
         //val datos = UsersController.selectDatoByEmail(textUser_Login.text.toString())!!
 
-        val intent = Intent(this, NavigationActivity::class.java)/*.apply {
-            putExtra("EMAIL", datos.email)
-            putExtra("IMG", datos.imgId)
-            putExtra("CICLO", datos.ciclo)
-            putExtra("CURSO", datos.curso)
-            putExtra("NAME", datos.name)
-            putExtra("ID", datos.id)
-        }*/
+        val intent = Intent(this, NavigationActivity::class.java).apply {
+            putExtra("EMAIL", email)
+        }
         startActivity(intent)
 
     }
