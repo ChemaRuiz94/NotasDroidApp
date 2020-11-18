@@ -12,7 +12,7 @@ object SQLiteControlador {
 
     // Variables de
     private const val DATOS_BD = "DATOS_BD_LITE"
-    private const val DATOS_BD_VERSION = 5
+    private const val DATOS_BD_VERSION = 9
 
     @SuppressLint("Recycle")
     fun selectUsuario(email: String?, context: Context?): UserSQLite? {

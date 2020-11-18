@@ -3,6 +3,7 @@ package android.com.diego.notasdroid.ui.matricula
 import android.com.diego.notasdroid.R
 import android.com.diego.notasdroid.datos.ModuloSQLite
 import android.com.diego.notasdroid.datos.SQLiteControlador
+import android.com.diego.notasdroid.navigation.NavigationActivity
 import android.com.diego.notasdroid.ui.pruebas.PruebaFragment
 import android.graphics.*
 import android.os.AsyncTask
@@ -222,12 +223,11 @@ class RegistrationFragment : Fragment() {
         // Creamos el dialogo y casamos sus elementos
         //Toast.makeText(context, "PULSADO datos", Toast.LENGTH_LONG).show()
         //abrirPruebas()
-        val pruebaFragment = PruebaFragment()
-        replaceFragment(pruebaFragment)
+        val pruebaFragment = PruebaFragment(NavigationActivity.user, dato)
+        abrirPrueba(pruebaFragment)
     }
 
-    private fun abrirPrueba(){
-        val fragment = PruebaFragment()
+    private fun abrirPrueba(fragment: Fragment){
         val transaction = activity!!.supportFragmentManager.beginTransaction()
             transaction.setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_fade_exit,
                  R.anim.fragment_fade_enter,
@@ -243,23 +243,6 @@ class RegistrationFragment : Fragment() {
         fragmentTransaction.replace(R.id.nav_host_fragment, fragment)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
-    }
-
-    /**
-     * Abre una noticia como Fragment
-     * @param noticia Noticia
-     */
-    private fun abrirPruebas() {
-        val pruebas = PruebaFragment()
-        val transaction = activity!!.supportFragmentManager.beginTransaction()
-        // animaciones
-        //        transaction.setCustomAnimations(R.anim.animacion_fragment1,
-        //        	R.anim.animacion_fragment1, R.anim.animacion_fragment2,
-        //        	R.anim.animacion_fragment1)
-        //Llamamos al replace
-        transaction.replace(R.id.fragment_registration, pruebas)
-        transaction.addToBackStack(null)
-        transaction.commit()
     }
 
     /**
