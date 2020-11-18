@@ -1,4 +1,4 @@
-package android.com.diego.notasdroid.ui.gallery
+package android.com.diego.notasdroid.ui.registration
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

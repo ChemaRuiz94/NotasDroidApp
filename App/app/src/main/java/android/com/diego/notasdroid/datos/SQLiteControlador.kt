@@ -12,7 +12,7 @@ object SQLiteControlador {
 
     // Variables de
     private const val DATOS_BD = "DATOS_BD_LITE"
-    private const val DATOS_BD_VERSION = 1
+    private const val DATOS_BD_VERSION = 2
 
     @SuppressLint("Recycle")
     fun selectUsuario(email: String?, context: Context?): UserSQLite? {
@@ -80,7 +80,7 @@ object SQLiteControlador {
             val values = ContentValues()
             values.put("nombre", module.nombre)
             values.put("nota", module.nota)
-            values.put("img", module.img)
+            //values.put("img", module.img)
             values.put("profesor", module.profesor)
             values.put("aula", module.aula)
             values.put("ciclo", module.ciclo)
@@ -112,7 +112,7 @@ object SQLiteControlador {
 
         if (c.moveToFirst()){
             do {
-                val modulo = ModuloSQLite(c.getString(1), c.getDouble(2), c.getString(3), c.getString(4),
+                val modulo = ModuloSQLite(c.getString(1), c.getDouble(2), c.getInt(3), c.getString(4),
                     c.getInt(5), c.getInt(6), c.getInt(7))
                 modulos.add(modulo)
 
@@ -242,6 +242,23 @@ object SQLiteControlador {
             sal = true
         } catch (ex: SQLException) {
             Log.d("Datos", "Error al eliminar este Dato " + ex.message)
+        } finally {
+            bd.close()
+            bdDatos.close()
+            return sal
+        }
+    }
+
+    fun removeAll(context: Context?): Boolean {
+        // Abrimos la BD en modo escritura
+        val bdDatos = DatosDB(context, DATOS_BD, null, DATOS_BD_VERSION)
+        val bd: SQLiteDatabase = bdDatos.writableDatabase
+        var sal = false
+        try {
+            bd.execSQL("DELETE FROM ${DatosDB.MODULE_TABLE}")
+            sal = true
+        } catch (ex: SQLException) {
+            Log.d("Datos", "Error al borrar todos los datos " + ex.message)
         } finally {
             bd.close()
             bdDatos.close()

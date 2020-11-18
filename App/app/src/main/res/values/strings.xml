@@ -38,4 +38,31 @@
     <string name="spinner_daw_registration">DAW</string>
     <string name="spinner_asir_registration">ASIR</string>
 
+    <string-array name="primeroDam">
+        <item>Base de Datos</item>
+        <item>Programación</item>
+        <item>Ingles</item>
+    </string-array>
+
+    <string-array name="profesorPrimeroDam">
+        <item>Alicia Velasco</item>
+        <item>Marciano</item>
+        <item>Teresa Rubio</item>
+    </string-array>
+
+    <string-array name="profesorSegundoDam">
+        <item>Joaquin Rubio</item>
+        <item>Jose Alberto</item>
+        <item>Inma Gijon</item>
+    </string-array>
+
+    <string-array name="segundoDam">
+        <item>Acceso a Datos</item>
+        <item>Desarrollo de Interfaces</item>
+        <item>Sistemas de Gestión Empresarial</item>
+    </string-array>
+
+    <string name="profesor">Teacher</string>
+    <string name="clase">Class</string>
+
 </resources>

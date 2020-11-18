@@ -1,10 +1,9 @@
 package android.com.diego.notasdroid.login
 
-import android.app.Application
-import android.com.diego.notasdroid.NavigationActivity
 import android.com.diego.notasdroid.R
 import android.com.diego.notasdroid.datos.SQLiteControlador
 import android.com.diego.notasdroid.datos.UsersController
+import android.com.diego.notasdroid.navigation.NavigationActivity
 import android.com.diego.notasdroid.utilidades.Utilidades
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
