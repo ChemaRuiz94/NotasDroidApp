@@ -2,16 +2,12 @@ package android.com.diego.notasdroid.login
 
 import android.com.diego.notasdroid.R
 import android.com.diego.notasdroid.datos.SQLiteControlador
-import android.com.diego.notasdroid.datos.UsersController
 import android.com.diego.notasdroid.navigation.NavigationActivity
 import android.com.diego.notasdroid.utilidades.Utilidades
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
 

@@ -38,31 +38,111 @@
     <string name="spinner_daw_registration">DAW</string>
     <string name="spinner_asir_registration">ASIR</string>
 
-    <string-array name="primeroDam">
-        <item>Base de Datos</item>
-        <item>Programación</item>
-        <item>Ingles</item>
+    <string-array name="primeroDamDaw">
+        <item>Information systems</item>
+        <item>Databases</item>
+        <item>Programming</item>
+        <item>Markup languages</item>
+        <item>Development Environments</item>
+        <item>English</item>
+        <item>Training and career counseling</item>
     </string-array>
 
     <string-array name="profesorPrimeroDam">
+        <item>Jaime Alemany</item>
         <item>Alicia Velasco</item>
-        <item>Marciano</item>
+        <item>Marciano de la Hoz</item>
+        <item>Alicia Velasco</item>
+        <item>Marciano de la Hoz</item>
         <item>Teresa Rubio</item>
+        <item>Maria Sánchez-Cruz</item>
+    </string-array>
+
+    <string-array name="profesorPrimeroDaw">
+        <item>Jaime Alemany</item>
+        <item>Alicia Velasco</item>
+        <item>Fernando G. Aranzabe</item>
+        <item>Alicia Velasco</item>
+        <item>Fernando G. Aranzabe</item>
+        <item>Teresa Rubio</item>
+        <item>Maria Sánchez-Cruz</item>
+    </string-array>
+
+    <string-array name="segundoDam">
+        <item>Data access</item>
+        <item>Interface development</item>
+        <item>Mult. prog. and devices mobile</item>
+        <item>Prog. of services and processes</item>
+        <item>Business management systems</item>
+        <item>Business and Entrepreneurship</item>
     </string-array>
 
     <string-array name="profesorSegundoDam">
         <item>Joaquin Rubio</item>
-        <item>Jose Alberto</item>
+        <item>Jose Alberto Garcia</item>
+        <item>Jose Luis Glez Schez</item>
+        <item>Fernando G. Aranzabe</item>
         <item>Inma Gijon</item>
+        <item>Maria Sánchez-Cruz</item>
     </string-array>
 
-    <string-array name="segundoDam">
-        <item>Acceso a Datos</item>
-        <item>Desarrollo de Interfaces</item>
-        <item>Sistemas de Gestión Empresarial</item>
+    <string-array name="segundoDaw">
+        <item>Web dev. in client environment</item>
+        <item>Web dev. in server environment</item>
+        <item>Web application deployment</item>
+        <item>Web interface design</item>
+        <item>Business and Entrepreneurship</item>
+    </string-array>
+
+    <string-array name="profesorSegundoDaw">
+        <item>Inma Gijon</item>
+        <item>Fernando G. Aranzabe</item>
+        <item>Jose Luis Glez Schez</item>
+        <item>Diego Cordoba</item>
+        <item>Maria Sánchez-Cruz</item>
+    </string-array>
+
+    <string-array name="primeroAsir">
+        <item>Implementation of O.S.</item>
+        <item>Network planning and admin.</item>
+        <item>Hardware fundamentals</item>
+        <item>Database management</item>
+        <item>Markup languages</item>
+        <item>English</item>
+        <item>Training and career counseling</item>
+    </string-array>
+
+    <string-array name="profesorPrimeroAsir">
+        <item>LuisFer Nicolas</item>
+        <item>Oscar Fernandez Morena</item>
+        <item>Jose Alberto Garcia</item>
+        <item>Joaquin Rubio</item>
+        <item>Maria del Mar Jimenez</item>
+        <item>Teresa Rubio</item>
+        <item>Maria Sánchez-Cruz</item>
+    </string-array>
+
+    <string-array name="segundoAsir">
+        <item>Operating systems management</item>
+        <item>Network and Internet services</item>
+        <item>Implementation of web applications</item>
+        <item>Admin. of database management systems</item>
+        <item>Security and high availability</item>
+        <item>Business and Entrepreneurship</item>
+    </string-array>
+
+    <string-array name="profesorSegundoAsir">
+        <item>LuisFer Nicolas</item>
+        <item>Maria del Mar Jimenez</item>
+        <item>Maria del Mar Jimenez</item>
+        <item>Joaquin Rubio</item>
+        <item>Joaquin Rubio</item>
+        <item>Maria Sánchez-Cruz</item>
     </string-array>
 
     <string name="profesor">Teacher</string>
     <string name="clase">Class</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

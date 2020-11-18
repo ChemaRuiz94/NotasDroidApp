@@ -1,8 +1,7 @@
-package android.com.diego.notasdroid.ui.registration
+package android.com.diego.notasdroid.ui.matricula
 
 import android.com.diego.notasdroid.R
 import android.com.diego.notasdroid.datos.ModuloSQLite
-import android.com.diego.notasdroid.utilidades.Utilidades
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +10,8 @@ import kotlinx.android.synthetic.main.item_list_registration.view.*
 
 class ModulosListAdapter(
 
-    var listaDatos: MutableList<ModuloSQLite>,
-    var viewHolder: ModuloViewHolder? = null,
-    val listener: (ModuloSQLite) -> Unit
+    private val listaDatos: MutableList<ModuloSQLite>,
+    private val listener: (ModuloSQLite) -> Unit
 
 ) : RecyclerView.Adapter<ModulosListAdapter.ModuloViewHolder>(){
 
@@ -25,17 +23,11 @@ class ModulosListAdapter(
      * @return
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModuloViewHolder {
-        /*return ModuloViewHolder(
+
+        return ModuloViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_list_registration, parent, false)
-        )*/
-
-        val vista = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_list_registration, parent, false)
-
-        //viewHolder = ModuloViewHolder(vista)
-
-        return ModuloViewHolder(vista)
+        )
     }
 
     /**
@@ -48,10 +40,15 @@ class ModulosListAdapter(
         val item = listaDatos[position]
         //val imagen = Utilidades.base64ToBitmap(item.img)
         holder.txtItemModulo.text = item.nombre
-        holder.imgItemModulo.setImageResource(R.drawable.ic_launcher_background)
+        holder.imgItemModulo.setImageResource(item.img)
         holder.txtItemProfesor.text = item.profesor
         holder.txtItemClase.text = item.aula.toString()
         holder.txtItemNota.text = item.nota.toString()
+
+        holder.itemView
+            .setOnClickListener {
+                listener(listaDatos[position])
+            }
 
     }
 

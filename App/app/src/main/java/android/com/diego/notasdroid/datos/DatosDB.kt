@@ -8,6 +8,7 @@ import androidx.annotation.Nullable
 class DatosDB (@Nullable context: Context?, @Nullable name: String?, @Nullable factory: SQLiteDatabase.CursorFactory?, version: Int) :
     SQLiteOpenHelper(context, name, factory, version) {
 
+
     override fun onCreate(db: SQLiteDatabase) {
 
         createTable(db)
@@ -18,7 +19,7 @@ class DatosDB (@Nullable context: Context?, @Nullable name: String?, @Nullable f
 
         val tablas = arrayOf(
             "CREATE TABLE $USER_TABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT , name TEXT, img TEXT, pwd TEXT, ciclo INTEGER, curso INTEGER)",
-            "CREATE TABLE $MODULE_TABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT , nota REAL, img TEXT, profesor TEXT, aula INTEGER, ciclo INTEGER, curso INTEGER)",
+            "CREATE TABLE $MODULE_TABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT , nota REAL, img INTEGER, profesor TEXT, aula INTEGER, ciclo INTEGER, curso INTEGER)",
             "CREATE TABLE $PRUEBAS_TABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT , fecha TEXT, realizada INTEGER, nota REAL, idUser INTEGER, idModule INTEGER)"
         )
 
@@ -28,8 +29,23 @@ class DatosDB (@Nullable context: Context?, @Nullable name: String?, @Nullable f
 
     }
 
+    private fun deleteTable(db: SQLiteDatabase){
+
+        val tablas = arrayOf(
+            "DROP TABLE IF EXISTS $USER_TABLE ",
+            "DROP TABLE IF EXISTS $MODULE_TABLE",
+            "DROP TABLE IF EXISTS $PRUEBAS_TABLE"
+        )
+
+        for (item in tablas){
+            db.execSQL(item)
+        }
+
+    }
+
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        TODO("Not yet implemented")
+        deleteTable(db)
+        createTable(db)
     }
 
     companion object{

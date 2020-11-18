@@ -7,13 +7,13 @@
 
     <fragment
             android:id="@+id/nav_home"
-            android:name="android.com.diego.notasdroid.ui.home.HomeFragment"
+            android:name="android.com.diego.notasdroid.ui.matricula.RegistrationFragment"
             android:label="@string/menu_home"
             tools:layout="@layout/fragment_registration"/>
 
     <fragment
             android:id="@+id/nav_gallery"
-            android:name="android.com.diego.notasdroid.ui.registration.RegistrationFragment"
+            android:name="android.com.diego.notasdroid.ui.expediente.ExpedienteFragment"
             android:label="@string/menu_gallery"
             tools:layout="@layout/fragment_expediente"/>
 

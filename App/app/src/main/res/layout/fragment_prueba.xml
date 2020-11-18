@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.matricula.RegistrationFragment" android:id="@+id/fragment_registration">
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/moduloSwipe_Registration"
+            android:id="@+id/pruebaSwipe"
             android:layout_width="match_parent"
             android:layout_height="match_parent" tools:layout_editor_absoluteY="-84dp"
             tools:layout_editor_absoluteX="0dp">
@@ -15,22 +15,22 @@
         <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/moduloScroll_Registration">
+                android:id="@+id/pruebaScroll">
 
 
             <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/registrationRecycler_Registration"
+                    android:id="@+id/pruebaRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:layout_editor_absoluteX="222dp"
                     tools:layout_editor_absoluteY="169dp"
-                    tools:listitem="@layout/item_list_registration"
+                    tools:listitem="@layout/item_list_prueba"
             />
 
         </ScrollView>
 
         <ProgressBar
-                android:id="@+id/pgbModulos_Registration"
+                android:id="@+id/pgbPrueba"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="117dp"
                 android:layout_height="78dp"
