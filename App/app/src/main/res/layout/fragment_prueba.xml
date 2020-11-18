@@ -5,7 +5,17 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.matricula.RegistrationFragment" android:id="@+id/fragment_registration">
+        tools:context=".ui.matricula.RegistrationFragment"
+        android:id="@+id/fragment_prueba"
+        android:background="@color/colorAccent"
+>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true" app:srcCompat="@drawable/ic_menu_gallery"
+    android:id="@+id/btnPruebaNueva"
+    app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginBottom="16dp" android:layout_marginEnd="16dp"/>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pruebaSwipe"
             android:layout_width="match_parent"

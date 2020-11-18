@@ -142,7 +142,10 @@
 
     <string name="profesor">Teacher</string>
     <string name="clase">Class</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="notaPrueba">Mark</string>
+    <string name="realizadaPrueba">Complete</string>
+    <string name="btnAceptar">Accept</string>
+    <string name="btnCancelar">Cancel</string>
+    <string name="nuevaPrueba">New Test</string>
 
 </resources>

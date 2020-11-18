@@ -3,6 +3,8 @@ package android.com.diego.notasdroid.ui.matricula
 import android.com.diego.notasdroid.R
 import android.com.diego.notasdroid.datos.ModuloSQLite
 import android.com.diego.notasdroid.datos.SQLiteControlador
+import android.com.diego.notasdroid.datos.UserSQLite
+import android.com.diego.notasdroid.navigation.NavigationActivity
 import android.com.diego.notasdroid.ui.pruebas.PruebaFragment
 import android.graphics.*
 import android.os.AsyncTask
@@ -19,7 +21,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_registration.*
 
-class RegistrationFragment : Fragment() {
+class RegistrationFragment(
+    private var userSQLite: UserSQLite
+) : Fragment() {
     // Mis variables
     private var modulos = mutableListOf<ModuloSQLite>() // Lista
 
@@ -222,11 +226,11 @@ class RegistrationFragment : Fragment() {
         // Creamos el dialogo y casamos sus elementos
         //Toast.makeText(context, "PULSADO datos", Toast.LENGTH_LONG).show()
         //abrirPruebas()
-        val pruebaFragment = PruebaFragment()
+        val pruebaFragment = PruebaFragment(userSQLite, dato)
         replaceFragment(pruebaFragment)
     }
 
-    private fun abrirPrueba(){
+    /*private fun abrirPrueba(){
         val fragment = PruebaFragment()
         val transaction = activity!!.supportFragmentManager.beginTransaction()
             transaction.setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_fade_exit,
@@ -236,7 +240,7 @@ class RegistrationFragment : Fragment() {
             transaction.replace(R.id.fragment_registration, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
-    }
+    }*/
 
     private fun replaceFragment(fragment: Fragment){
         val fragmentTransaction = activity!!.supportFragmentManager.beginTransaction()
@@ -248,7 +252,7 @@ class RegistrationFragment : Fragment() {
     /**
      * Abre una noticia como Fragment
      * @param noticia Noticia
-     */
+     *
     private fun abrirPruebas() {
         val pruebas = PruebaFragment()
         val transaction = activity!!.supportFragmentManager.beginTransaction()
@@ -260,7 +264,7 @@ class RegistrationFragment : Fragment() {
         transaction.replace(R.id.fragment_registration, pruebas)
         transaction.addToBackStack(null)
         transaction.commit()
-    }
+    }*/
 
     /**
      * Tarea asíncrona para la carga de datos
