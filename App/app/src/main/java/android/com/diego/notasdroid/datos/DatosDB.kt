@@ -3,6 +3,7 @@ package android.com.diego.notasdroid.datos
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.preference.PreferenceManager
 import androidx.annotation.Nullable
 
 class DatosDB (@Nullable context: Context?, @Nullable name: String?, @Nullable factory: SQLiteDatabase.CursorFactory?, version: Int) :
@@ -19,8 +20,8 @@ class DatosDB (@Nullable context: Context?, @Nullable name: String?, @Nullable f
 
         val tablas = arrayOf(
             "CREATE TABLE $USER_TABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT , name TEXT, img TEXT, pwd TEXT, ciclo INTEGER, curso INTEGER)",
-            "CREATE TABLE $MODULE_TABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT , nota REAL, img INTEGER, profesor TEXT, aula INTEGER, ciclo INTEGER, curso INTEGER)",
-            "CREATE TABLE $PRUEBAS_TABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT , fecha TEXT, realizada INTEGER, nota REAL, idUser INTEGER, idModule INTEGER)"
+            "CREATE TABLE IF NOT EXISTS $MODULE_TABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT , nota REAL, img INTEGER, profesor TEXT, aula INTEGER, ciclo INTEGER, curso INTEGER)",
+            "CREATE TABLE $PRUEBAS_TABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT , fecha TEXT, realizada INTEGER, nota REAL, idUser TEXT, idModule TEXT)"
         )
 
         for (item in tablas){
@@ -46,6 +47,7 @@ class DatosDB (@Nullable context: Context?, @Nullable name: String?, @Nullable f
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         deleteTable(db)
         createTable(db)
+
     }
 
     companion object{

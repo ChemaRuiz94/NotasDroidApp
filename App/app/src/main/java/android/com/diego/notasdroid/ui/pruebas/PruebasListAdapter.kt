@@ -42,7 +42,7 @@ class PruebasListAdapter(
         //val imagen = Utilidades.base64ToBitmap(item.img)
         holder.txtNamePrueba.text = item.nombre
         holder.txtDatePrueba.text = item.fecha
-        holder.txtNota.text = item.nota.toString()
+        holder.txtNota.text = String.format("%.2f",item.nota)
         holder.checkRealizada.isChecked = setChecked(item.realizada)
 
         holder.itemView

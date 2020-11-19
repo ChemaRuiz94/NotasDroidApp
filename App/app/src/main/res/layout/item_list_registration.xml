@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cardView_Registration"
+        xmlns:tools="http://schemas.android.com/tools" android:id="@+id/cardView_Registration"
         android:layout_width="match_parent"
+        android:background="@color/divider"
         android:layout_height="60dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="3dp"
@@ -57,15 +58,15 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="8.5"
-            android:layout_marginStart="300dp"/>
+            android:text="8.50"
+            android:layout_marginStart="275dp"/>
     <ImageView
             android:layout_width="49dp"
             android:layout_height="48dp"
-            app:srcCompat="@drawable/ic_launcher_background"
             android:layout_marginTop="6dp"
             android:layout_marginLeft="6dp"
-            android:id="@+id/imgItemModulo_Registration"/>
+            android:id="@+id/imgItemModulo_Registration" android:scaleType="centerInside"
+            app:srcCompat="@drawable/acceso"/>
 
 
 </androidx.cardview.widget.CardView>

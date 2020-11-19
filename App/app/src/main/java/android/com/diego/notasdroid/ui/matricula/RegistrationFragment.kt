@@ -3,7 +3,6 @@ package android.com.diego.notasdroid.ui.matricula
 import android.com.diego.notasdroid.R
 import android.com.diego.notasdroid.datos.ModuloSQLite
 import android.com.diego.notasdroid.datos.SQLiteControlador
-import android.com.diego.notasdroid.datos.UserSQLite
 import android.com.diego.notasdroid.navigation.NavigationActivity
 import android.com.diego.notasdroid.ui.pruebas.PruebaFragment
 import android.graphics.*
@@ -26,7 +25,7 @@ class RegistrationFragment(
 ) : Fragment() {
     // Mis variables
     private var modulos = mutableListOf<ModuloSQLite>() // Lista
-
+    private lateinit var modulo : ModuloSQLite
     // Interfaz gráfica
     private lateinit var adapter: ModulosListAdapter //Adaptador de Recycler
     private lateinit var tarea: TareaCargarDatos // Tarea en segundo plano
@@ -38,6 +37,7 @@ class RegistrationFragment(
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_registration, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -106,13 +106,8 @@ class RegistrationFragment(
                 // Si pulsamos a la de izquierda o a la derecha
                 // Programamos la accion
                 when (direction) {
-                    ItemTouchHelper.LEFT -> {
-                        Log.d("Datos", "Tocado izquierda");
-                        //borrarElemento(position)
-                    }
-                    else -> {
-                        Log.d("Datos", "Tocado derecha");
-                        //editarElemento(position)
+                    ItemTouchHelper.RIGHT -> {
+                        eventoClicFila(modulo)
                     }
                 }
             }
@@ -141,7 +136,7 @@ class RegistrationFragment(
                     // Pintamos de azul y ponemos el icono
                     if (dX > 0) {
                         // Pintamos el botón izquierdo
-                        botonIzquierdo(canvas, dX, itemView, width)
+                        //botonIzquierdo(canvas, dX, itemView, width)
                     } else {
                         // Caso contrario
                         botonDerecho(canvas, dX, itemView, width)
@@ -187,7 +182,7 @@ class RegistrationFragment(
      */
     private fun botonIzquierdo(canvas: Canvas, dX: Float, itemView: View, width: Float) {
         // Pintamos de azul y ponemos el icono
-        paintSweep.setColor(Color.BLUE)
+        paintSweep.color = Color.BLUE
         val background = RectF(
             itemView.left.toFloat(), itemView.top.toFloat(), dX,
             itemView.bottom.toFloat()
@@ -212,26 +207,23 @@ class RegistrationFragment(
     fun getDatosFromBD() {
 
         // Seleccionamos los datos
-        this.modulos = SQLiteControlador.selectModulos("1", "2", context)!!
-        // Si queremos le añadimos unos datos ficticios
-        // this.datos.addAll(DatosController.initDatos())
+        this.modulos = SQLiteControlador.selectModulos(NavigationActivity.user.ciclo.toString(), NavigationActivity.user.curso.toString(), context)!!
     }
 
 
     /**
      * Evento cli asociado a una fila
-     * @param dato Dato
+     * @param dato ModuloSQLite
      */
     private fun eventoClicFila(dato: ModuloSQLite) {
         // Creamos el dialogo y casamos sus elementos
         //Toast.makeText(context, "PULSADO datos", Toast.LENGTH_LONG).show()
         //abrirPruebas()
-        val pruebaFragment = PruebaFragment(userSQLite, dato)
-        replaceFragment(pruebaFragment)
+        val pruebaFragment = PruebaFragment(NavigationActivity.user, dato)
+        abrirPrueba(pruebaFragment)
     }
 
-    /*private fun abrirPrueba(){
-        val fragment = PruebaFragment()
+    private fun abrirPrueba(fragment: Fragment){
         val transaction = activity!!.supportFragmentManager.beginTransaction()
             transaction.setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_fade_exit,
                  R.anim.fragment_fade_enter,
@@ -240,30 +232,6 @@ class RegistrationFragment(
             transaction.replace(R.id.fragment_registration, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
-    }*/
-
-    private fun replaceFragment(fragment: Fragment){
-        val fragmentTransaction = activity!!.supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment, fragment)
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
-    }
-
-    /**
-     * Abre una noticia como Fragment
-     * @param noticia Noticia
-     *
-    private fun abrirPruebas() {
-        val pruebas = PruebaFragment()
-        val transaction = activity!!.supportFragmentManager.beginTransaction()
-        // animaciones
-        //        transaction.setCustomAnimations(R.anim.animacion_fragment1,
-        //        	R.anim.animacion_fragment1, R.anim.animacion_fragment2,
-        //        	R.anim.animacion_fragment1)
-        //Llamamos al replace
-        transaction.replace(R.id.fragment_registration, pruebas)
-        transaction.addToBackStack(null)
-        transaction.commit()
     }*/
 
     /**
@@ -302,6 +270,7 @@ class RegistrationFragment(
             Log.d("Datos", "entrando en onPostExecute")
             adapter = ModulosListAdapter(modulos) {
                 eventoClicFila(it)
+                modulo = it
             }
 
             registrationRecycler_Registration.adapter = adapter
