@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_prueba"
+        android:background="@color/colorAccent"
+>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true" app:srcCompat="@drawable/ic_menu_gallery"
+            android:id="@+id/btnPruebaNueva"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="16dp" android:layout_marginEnd="16dp"/>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pruebaSwipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" tools:layout_editor_absoluteY="-84dp"
+            tools:layout_editor_absoluteX="0dp">
+
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/pruebaScroll">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/pruebaRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:layout_editor_absoluteX="222dp"
+                    tools:layout_editor_absoluteY="169dp"
+                    tools:listitem="@layout/item_list_prueba"
+            />
+
+        </ScrollView>
+
+        <ProgressBar
+                android:id="@+id/pgbPrueba"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="117dp"
+                android:layout_height="78dp"
+                tools:layout_editor_absoluteX="147dp"
+                tools:layout_editor_absoluteY="250dp"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,8 +11,11 @@ import android.com.diego.notasdroid.datos.ModuloSQLite
 import android.com.diego.notasdroid.datos.PruebaSQLite
 import android.com.diego.notasdroid.datos.SQLiteControlador
 import android.com.diego.notasdroid.datos.UserSQLite
+import android.com.diego.notasdroid.ui.matricula.ModulosListAdapter
+import android.content.ContentValues
 import android.graphics.*
 import android.os.AsyncTask
+import android.text.Editable
 import android.util.Log
 import android.widget.CheckBox
 import android.widget.Toast
@@ -21,6 +24,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
 import kotlinx.android.synthetic.main.dialog_layout.view.*
 import kotlinx.android.synthetic.main.fragment_prueba.*
 
@@ -111,11 +117,10 @@ class PruebaFragment(
                 // Programamos la accion
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
-                        Log.d("Datos", "Tocado izquierda");
+
                         borrarElemento(position)
                     }
                     else -> {
-                        Log.d("Datos", "Tocado derecha");
                         editarElemento(position)
                     }
                 }
@@ -230,6 +235,7 @@ class PruebaFragment(
             // Lo insertamos
             SQLiteControlador.insertPrueba(deletedModel, context)
         }
+        actualizarNotaModulo()
         snackbar.setActionTextColor(resources.getColor(R.color.colorPrimary))
         snackbar.show()
     }
@@ -248,7 +254,11 @@ class PruebaFragment(
         val inflater = this.layoutInflater
         val dialogView = inflater.inflate(R.layout.dialog_layout, null)
 
-        //dialogView.txtNombreDialog.text = "Nuevo nombre para: " + editedModel.descripcion
+        //Comentado por crasheo, esta seria la forma de obtener los datos almacenados
+        /*dialogView.edtNamePrueba.text = editedModel.nombre as Editable
+        dialogView.edtDatePrueba.text = editedModel.fecha as Editable
+        dialogView.edtNotaPrueba.text = editedModel.nota.toString() as Editable*/
+
         // Pulsamos cancelar
         dialogView.btnCancelarPrueba.setOnClickListener {
             dialogBuilder.dismiss()
@@ -256,12 +266,24 @@ class PruebaFragment(
         }
         // Pulsamos aceptar
         dialogView.btnAceptarPrueba.setOnClickListener {
+            var nombre = dialogView.edtNamePrueba.text.toString()
+            var fecha = dialogView.edtDatePrueba.text.toString()
+            val checkBox = dialogView.ckbPruebaRealizadaDialog!!
+            val entero = getChecked(checkBox)
+            var texto = dialogView.edtNotaPrueba.text.toString()
+
+            nombre = nulos(nombre)
+            fecha = nulos(fecha)
+            texto = nulos(texto)
+            val nota = nullDouble(texto).toDouble()
+
             // Creamos el nuevo dato
-            //val datoNew = PruebaSQLite(dialogView.edtDescripcionDialog.text.toString(), editedModel.imgId)
+            val datoNew = PruebaSQLite(nombre, fecha, entero, nota, userSQLite.email, moduloSQLite.nombre)
             dialogBuilder.dismiss()
-            //adapter.restoreItem(datoNew, position)
+            adapter.restoreItem(datoNew, position)
             // Actualizamos datos
-            //SQLiteControlador.updatePrueba(datoNew, editedModel, context)
+            SQLiteControlador.updatePrueba(datoNew, editedModel, context)
+            actualizarNotaModulo()
         }
         dialogBuilder.setView(dialogView)
         dialogBuilder.show()
@@ -296,6 +318,7 @@ class PruebaFragment(
             adapter.addItem(datoNew)
             // insertamos los datos
             SQLiteControlador.insertPrueba(datoNew, context)
+            actualizarNotaModulo()
         }
         dialogBuilder.setView(dialogView)
         dialogBuilder.show()
@@ -328,35 +351,78 @@ class PruebaFragment(
         }
     }
 
+    private fun calcularMediaPruebas(): Double {
+        var suma = 0.0
+        var cont = 0
+
+        for (prueba in pruebas){
+
+            if (prueba.realizada == 1){
+                suma += prueba.nota
+                cont ++
+            }
+
+
+        }
+
+        return suma/cont
+
+    }
+
+    private fun actualizarNotaModulo(){
+
+        val media = calcularMediaPruebas()
+        val newModulo = ModuloSQLite(moduloSQLite.nombre, media, moduloSQLite.img, moduloSQLite.profesor,
+                moduloSQLite.aula, moduloSQLite.ciclo, moduloSQLite.curso)
+
+        SQLiteControlador.updateModulos(newModulo, moduloSQLite, context)
+
+    }
+
+
     fun getDatosFromBD() {
 
         // Seleccionamos los datos
         this.pruebas = SQLiteControlador.selectPruebas(userSQLite.email, moduloSQLite.nombre, context)!!
-        // Si queremos le añadimos unos datos ficticios
-        // this.datos.addAll(DatosController.initDatos())
+
     }
 
+    private fun abrirQR(fragment: Fragment){
+        val transaction = activity!!.supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_fade_exit,
+            R.anim.fragment_fade_enter,
+            R.anim.nav_default_pop_exit_anim
+        )
+        transaction.replace(R.id.fragment_registration, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
 
     /**
      * Evento cli asociado a una fila
      * @param dato Dato
      */
-    private fun eventoClicFila(dato: PruebaSQLite) {
-        // Creamos el dialogo y casamos sus elementos
-        val dialogBuilder = AlertDialog.Builder(context).create()
-        val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(R.layout.dialog_layout, null)
+    private fun eventoClicFila(pruebaSQLite: PruebaSQLite) {
+            val texto = pruebaSQLite.fecha + pruebaSQLite.nombre + pruebaSQLite.nota
+            generateQRCode(texto)
+    }
 
-        dialogView.btnCancelarPrueba.isVisible = false
-        //dialogView.edtDescripcionDialog.setText(dato.descripcion)
-        //dialogView.edtDescripcionDialog.isEnabled = false
-        //dialogView.txtNombreDialog.text = "Nombre: "
-        // Pulsamos aceptar
-        dialogView.btnAceptarPrueba.setOnClickListener {
-            dialogBuilder.dismiss()
+    private fun generateQRCode(text: String): Bitmap {
+        val width = 500
+        val height = 500
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val codeWriter = MultiFormatWriter()
+        try {
+            val bitMatrix = codeWriter.encode(text, BarcodeFormat.QR_CODE, width, height)
+            for (x in 0 until width) {
+                for (y in 0 until height) {
+                    bitmap.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
+                }
+            }
+        } catch (e: WriterException) {
+            Log.d(ContentValues.TAG, "generateQRCode: ${e.message}")
         }
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
+        return bitmap
     }
 
     /**

@@ -7,31 +7,48 @@ import android.com.diego.notasdroid.login.LoginActivity
 import android.com.diego.notasdroid.signUp.SignUp
 import android.com.diego.notasdroid.utilidades.Utilidades
 import android.content.Intent
+import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
+import android.preference.PreferenceManager
 import android.util.Log
 
 class SplashActivity : AppCompatActivity() {
 
     private var imagenesDam = arrayOf(R.drawable.acceso, R.drawable.sge)
+    private var login = ""
+    private var bbdd = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        val sharedPref : SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        sharedPref.apply {
+            login = getString("LOGIN", "").toString()
+            bbdd = getString("BBDD", "").toString()
+        }
+        if (login == "YES"){
 
-        SystemClock.sleep(4000)
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }else{
+            val intent = Intent(this, SignUp::class.java)
+            startActivity(intent)
+        }
+        if (bbdd != "YES"){
+            initModulos()
+        }
+        SystemClock.sleep(2000)
 
-        SQLiteControlador.removeAll(this)
-        initModulos()
-
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
         finish()
+
     }
 
     private fun initModulos(){
@@ -41,6 +58,10 @@ class SplashActivity : AppCompatActivity() {
         crearModulos(R.array.segundoDam, R.array.profesorSegundoDam, 209, 1, 2)
         crearModulos(R.array.segundoDaw, R.array.profesorSegundoDaw, 206, 2, 2)
         crearModulos(R.array.segundoAsir, R.array.profesorSegundoAsir, 204, 3, 2)
+        val sharedPref : SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val editor = sharedPref.edit()
+
+        editor.putString("BBDD", "YES").apply()
 
     }
 
@@ -48,12 +69,12 @@ class SplashActivity : AppCompatActivity() {
 
         val listaModulo = resources.getStringArray(idModulo)
         val listaProfesores = resources.getStringArray(idProfesor)
-        val bitmap: Bitmap = BitmapFactory.decodeResource(resources, imagenesDam[0])
-        val imagen = Utilidades.bitmapToBase64(bitmap)!!
+        val imagen = Uri.parse(R.drawable.sge.toString())
+        val img = imagen.toString().toInt()
         var i = 0
         for (item in listaModulo){
             val profesor = listaProfesores[i]
-            val newModule = ModuloSQLite(item.toString(), 0.0, R.drawable.ic_menu_camera, profesor, aula,ciclo, curso)
+            val newModule = ModuloSQLite(item.toString(), 0.0, img, profesor, aula,ciclo, curso)
             SQLiteControlador.insertModulo(newModule, this)
             i+=1
 

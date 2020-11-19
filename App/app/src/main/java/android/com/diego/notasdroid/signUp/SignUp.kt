@@ -15,6 +15,7 @@ import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.preference.PreferenceManager
 import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
@@ -105,6 +106,10 @@ class SignUp : AppCompatActivity() {
 
                 val newUser = UserSQLite(emailRegistro, nameRegistro, imagen, pwdEncriptada, ciclo, curso)
                 SQLiteControlador.insertUsuario(newUser, this)
+                val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+                val editor = sharedPref.edit()
+
+                editor.putString("LOGIN", "YES").apply()
                 initLogin()
             }
 

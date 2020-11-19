@@ -127,6 +127,34 @@ object SQLiteControlador {
     }
 
     @SuppressLint("Recycle")
+    fun selectModulosOrder(ciclo: String?, curso: String?, context: Context?): MutableList<ModuloSQLite>? {
+
+        val modulos = mutableListOf<ModuloSQLite>()
+        val bdDatos = DatosDB(context, DATOS_BD, null, DATOS_BD_VERSION)
+        val bd = bdDatos.readableDatabase
+
+        val args = arrayOf(ciclo, curso )
+
+        //val c = bd.query(DatosDB.USER_TABLE, null, null, null, null, filtro, null)
+        val c = bd.rawQuery("SELECT * FROM " + DatosDB.MODULE_TABLE + " WHERE ciclo = ? AND curso = ? ORDER BY nota DESC" , args)
+
+        if (c.moveToFirst()){
+            do {
+                val modulo = ModuloSQLite(c.getString(1), c.getDouble(2), c.getInt(3), c.getString(4),
+                    c.getInt(5), c.getInt(6), c.getInt(7))
+                modulos.add(modulo)
+
+            }while(c.moveToNext())
+        }
+
+        bd.close()
+        bdDatos.close()
+
+        return modulos
+
+    }
+
+    @SuppressLint("Recycle")
     fun selectPruebas(idUser: String?, idModulo: String?, context: Context?): MutableList<PruebaSQLite>? {
 
         val pruebas = mutableListOf<PruebaSQLite>()
@@ -212,6 +240,43 @@ object SQLiteControlador {
             // En el fondo hemos hecho where descripción = dato.descripcion, podíamos haber usado el id
             // Eliminamos. En res tenemos el numero de filas eliminadas por si queremos tenerlo en cuenta
             val res = bd.update(DatosDB.PRUEBAS_TABLE, values, where, args)
+            sal = true
+        } catch (ex: SQLException) {
+            Log.d("Datos", "Error al actualizar este lugar " + ex.message)
+        } finally {
+            bd.close()
+            bdDatos.close()
+            return sal
+        }
+    }
+
+    /**
+    * Actualiza un lugar en el sistema de almacenamiento
+    */
+    @SuppressLint("SimpleDateFormat")
+    fun updateModulos(moduloNew: ModuloSQLite, moduloOld: ModuloSQLite, context: Context?): Boolean {
+        // Abrimos la BD en modo escritura
+        val bdDatos = DatosDB(context, DATOS_BD, null, DATOS_BD_VERSION)
+        val bd: SQLiteDatabase = bdDatos.writableDatabase
+        var sal = false
+
+        try {
+            // Cargamos los valores
+            val values = ContentValues()
+            values.put("nombre", moduloNew.nombre)
+            values.put("nota", moduloNew.nota)
+            values.put("img", moduloNew.img)
+            values.put("profesor", moduloNew.profesor)
+            values.put("aula", moduloNew.aula)
+            values.put("ciclo", moduloNew.ciclo)
+            values.put("curso", moduloNew.curso)
+            // Creamos el where
+            val where = "nombre = ? "
+            //Cargamos los parámetros es un vector, en este caso es solo uno, pero podrían ser mas
+            val args  = arrayOf(moduloOld.nombre)
+            // En el fondo hemos hecho where descripción = dato.descripcion, podíamos haber usado el id
+            // Eliminamos. En res tenemos el numero de filas eliminadas por si queremos tenerlo en cuenta
+            val res = bd.update(DatosDB.MODULE_TABLE, values, where, args)
             sal = true
         } catch (ex: SQLException) {
             Log.d("Datos", "Error al actualizar este lugar " + ex.message)

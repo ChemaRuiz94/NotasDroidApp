@@ -3,8 +3,12 @@ package android.com.diego.notasdroid.navigation
 import android.com.diego.notasdroid.R
 import android.com.diego.notasdroid.datos.SQLiteControlador
 import android.com.diego.notasdroid.datos.UserSQLite
+import android.com.diego.notasdroid.signUp.SignUp
 import android.com.diego.notasdroid.utilidades.Utilidades
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.Menu
 import android.widget.ImageView
 import android.widget.TextView

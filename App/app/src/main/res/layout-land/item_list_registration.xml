@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" android:id="@+id/cardView_Registration"
+        android:layout_width="match_parent"
+        android:background="@color/divider"
+        android:layout_height="60dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="3dp"
+        android:layout_margin="10dp"
+        android:foreground="?selectableItemBackground"
+        android:clickable="true">
+
+
+    <TextView
+            android:id="@+id/txtItemModulo_Registration"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:lines="2"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text="Acceso a Datos"
+            android:layout_marginLeft="21dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="10dp"/>
+
+    <TextView
+            android:id="@+id/txtItemModuloProfesor_Registration"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="30sp"
+            android:layout_marginEnd="10sp"
+            android:layout_marginStart="60dp"
+            android:textSize="10sp"
+            android:textColor="@color/colorPrimary"
+            android:text="Profesor: Joaquin Rubio"/>
+
+    <TextView
+            android:id="@+id/txtItemModuloClase_Registration"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:layout_marginTop="35sp"
+            android:layout_marginEnd="10sp"
+            android:layout_marginStart="60dp"
+            android:textSize="10sp"
+            android:text="Aula: 209"
+            android:textColor="@color/colorPrimary"/>
+    <TextView
+            android:id="@+id/txtItemModuloNota_Registration"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:lines="2"
+            android:gravity="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="8.50"
+            android:layout_marginStart="275dp"/>
+    <ImageView
+            android:layout_width="49dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="6dp"
+            android:id="@+id/imgItemModulo_Registration" android:scaleType="centerInside"
+            app:srcCompat="@drawable/acceso"/>
+
+
+</androidx.cardview.widget.CardView>

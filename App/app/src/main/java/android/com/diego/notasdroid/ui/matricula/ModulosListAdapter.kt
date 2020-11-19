@@ -2,6 +2,7 @@ package android.com.diego.notasdroid.ui.matricula
 
 import android.com.diego.notasdroid.R
 import android.com.diego.notasdroid.datos.ModuloSQLite
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,12 +39,12 @@ class ModulosListAdapter(
      */
     override fun onBindViewHolder(holder: ModuloViewHolder, position: Int) {
         val item = listaDatos[position]
-        //val imagen = Utilidades.base64ToBitmap(item.img)
+        val uri = Uri.parse(item.img.toString())
         holder.txtItemModulo.text = item.nombre
-        holder.imgItemModulo.setImageResource(item.img)
+        holder.imgItemModulo.setBackgroundResource(uri.toString().toInt())
         holder.txtItemProfesor.text = item.profesor
         holder.txtItemClase.text = item.aula.toString()
-        holder.txtItemNota.text = item.nota.toString()
+        holder.txtItemNota.text = String.format("%.2f",item.nota)
 
         holder.itemView
             .setOnClickListener {
@@ -60,10 +61,6 @@ class ModulosListAdapter(
     override fun getItemCount(): Int {
         return listaDatos.size
     }
-
-    /*fun list(): MutableList<ModuloSQLite> {
-        return this.listaDatos
-    }*/
 
     /**
      * Holder que encapsula los objetos a mostrar en la lista
