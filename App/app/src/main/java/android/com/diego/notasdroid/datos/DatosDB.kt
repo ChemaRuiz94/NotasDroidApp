@@ -20,7 +20,7 @@ class DatosDB (@Nullable context: Context?, @Nullable name: String?, @Nullable f
         val tablas = arrayOf(
             "CREATE TABLE $USER_TABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT , name TEXT, img TEXT, pwd TEXT, ciclo INTEGER, curso INTEGER)",
             "CREATE TABLE $MODULE_TABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT , nota REAL, img INTEGER, profesor TEXT, aula INTEGER, ciclo INTEGER, curso INTEGER)",
-            "CREATE TABLE $PRUEBAS_TABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT , fecha TEXT, realizada INTEGER, nota REAL, idUser INTEGER, idModule INTEGER)"
+            "CREATE TABLE $PRUEBAS_TABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT , fecha TEXT, realizada INTEGER, nota REAL, idUser TEXT, idModule TEXT)"
         )
 
         for (item in tablas){

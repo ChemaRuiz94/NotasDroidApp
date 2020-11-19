@@ -12,7 +12,7 @@ object SQLiteControlador {
 
     // Variables de
     private const val DATOS_BD = "DATOS_BD_LITE"
-    private const val DATOS_BD_VERSION = 9
+    private const val DATOS_BD_VERSION = 10
 
     @SuppressLint("Recycle")
     fun selectUsuario(email: String?, context: Context?): UserSQLite? {
@@ -141,7 +141,7 @@ object SQLiteControlador {
         if (c.moveToFirst()){
             do {
                 val prueba = PruebaSQLite(c.getString(1), c.getString(2), c.getInt(3), c.getDouble(4),
-                    c.getInt(5), c.getInt(6))
+                    c.getString(5), c.getString(6))
                 pruebas.add(prueba)
 
             }while(c.moveToNext())

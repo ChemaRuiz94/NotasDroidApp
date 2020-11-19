@@ -21,10 +21,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.dialog_layout.*
 import kotlinx.android.synthetic.main.dialog_layout.view.*
 import kotlinx.android.synthetic.main.fragment_prueba.*
-import java.sql.RowId
 
 class PruebaFragment(
     private var userSQLite: UserSQLite,
@@ -275,27 +273,50 @@ class PruebaFragment(
         val inflater = this.layoutInflater
         val dialogView = inflater.inflate(R.layout.dialog_layout, null)
 
-        //dialogView.txtNombreDialog.text = "Nuevo nombre: "
         // Pulsamos cancelar
         dialogView.btnCancelarPrueba.setOnClickListener {
             dialogBuilder.dismiss()
         }
         // Pulsamos aceptar
         dialogView.btnAceptarPrueba.setOnClickListener {
-            val nombre = dialogView.edtNamePrueba.text.toString()
-            val fecha = dialogView.edtDatePrueba.text.toString()
-            val realizada = getChecked(ckbPruebaRealizadaDialog)
-            val nota = dialogView.edtNotaPrueba.text.toString().toDouble()
+            var nombre = dialogView.edtNamePrueba.text.toString()
+            var fecha = dialogView.edtDatePrueba.text.toString()
+            val checkBox = dialogView.ckbPruebaRealizadaDialog!!
+            val entero = getChecked(checkBox)
+            var texto = dialogView.edtNotaPrueba.text.toString()
+
+            nombre = nulos(nombre)
+            fecha = nulos(fecha)
+            texto = nulos(texto)
+            val nota = nullDouble(texto).toDouble()
 
             // Creamos el nuevo dato
-            /*val datoNew = PruebaSQLite(nombre, fecha, realizada, nota, userSQLite.email, moduloSQLite.nombre)
+            val datoNew = PruebaSQLite(nombre, fecha, entero, nota, userSQLite.email, moduloSQLite.nombre)
             dialogBuilder.dismiss()
             adapter.addItem(datoNew)
             // insertamos los datos
-            SQLiteControlador.insertPrueba(datoNew, context)*/
+            SQLiteControlador.insertPrueba(datoNew, context)
         }
         dialogBuilder.setView(dialogView)
         dialogBuilder.show()
+    }
+    private fun nulos( cadena : String): String {
+
+        return if (cadena.isEmpty()) {
+            ""
+        }else{
+            cadena
+        }
+    }
+
+    private fun nullDouble(cadena: String): String {
+
+            return if (cadena.isEmpty()){
+                "0.00"
+            }else{
+                cadena
+            }
+
     }
 
     private fun getChecked(checkBox: CheckBox): Int {
@@ -310,7 +331,7 @@ class PruebaFragment(
     fun getDatosFromBD() {
 
         // Seleccionamos los datos
-        this.pruebas = SQLiteControlador.selectPruebas(0.toString(), 0.toString(), context)!!
+        this.pruebas = SQLiteControlador.selectPruebas(userSQLite.email, moduloSQLite.nombre, context)!!
         // Si queremos le añadimos unos datos ficticios
         // this.datos.addAll(DatosController.initDatos())
     }

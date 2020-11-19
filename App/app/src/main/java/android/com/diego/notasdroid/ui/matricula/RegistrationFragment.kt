@@ -217,7 +217,7 @@ class RegistrationFragment : Fragment() {
 
     /**
      * Evento cli asociado a una fila
-     * @param dato Dato
+     * @param dato ModuloSQLite
      */
     private fun eventoClicFila(dato: ModuloSQLite) {
         // Creamos el dialogo y casamos sus elementos
